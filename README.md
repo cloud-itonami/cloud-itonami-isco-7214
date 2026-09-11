@@ -13,7 +13,7 @@ This repository designs a forkable OSS business for a structural-steel-erection 
 (`steelcoord.governor`), following the itonami actor pattern
 (ADR-2607011000): `:intake -> :advise -> :govern -> :decide -+-> :commit
 (:ok? true) +-> :request-approval (:escalate? true, human-in-the-loop
-interrupt) +-> :hold (:hard? true)`. See `clojure -M:test` output for
+interrupt) +-> :hold (:hard? true)`. See `kbb -M:test` output for
 the current test/assertion counts.
 
 HARD invariants (always `:hold`, never overridable): the job site
