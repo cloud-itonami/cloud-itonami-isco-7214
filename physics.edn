@@ -1,0 +1,35 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": a job-site scheduling/logistics coordination
+;; robot for structural metal preparers and erectors (ISCO 7214) logs work
+;; records, proposes crew/crane schedules, surfaces safety concerns and
+;; coordinates structural-steel materials orders; it never erects steel and
+;; never authorizes a crane lift. Its physical work is connection-materials
+;; logistics: carrying bolt kits across the deck to the connection being
+;; made, and proof-loading a sample bolt from each delivered lot.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-7214"
+ :cases
+ [{:id :bolt-kit-deck-run
+   :kind :transport
+   :procedure "logistics robot carries boxed bolt / splice-plate kits 40 m across the composite deck to the bay being connected; the deck is still bare profiled sheet, so rolling resistance is high"
+   :params {:mass-kg 120.0 :distance-m 40.0 :v-max-mps 0.8 :a-max-mps2 0.4
+            :brake-decel-mps2 0.8 :drive-force-n 350.0 :crr 0.06
+            :cog-height-m 0.35 :support-half-length-m 0.35 :payload-cog-height-m 0.50}
+   :sweep {:param :payload-kg :values [50.0 100.0 200.0 300.0 400.0]}
+   :quantity :cycle-time-s
+   :limit {:max 75.0 :basis "estimate: kits must reach the connection within the crane's hook cycle so the erection crew is not kept waiting"}
+   :boundary {:lo 10.0 :hi 600.0}}
+  {:id :bolt-lot-proof-load
+   :kind :material
+   :procedure "robot proof-loads one M20 property-class 8.8 bolt from each delivered lot in tension over an 80 mm grip; the applied load is swept up past the proof load"
+   :params {:length-m 0.08 :area-m2 2.45e-4 :youngs-modulus-pa 210.0e9 :yield-stress-pa 660.0e6
+            :hardening-pa 2.0e9}
+   :sweep {:param :max-force-n :values [100000.0 130000.0 147000.0 160000.0 175000.0]}
+   :quantity :final-strain
+   :limit {:max 0.00314 :basis "estimate: the bolt must stay elastic at proof load; strain at an 8.8 bolt's minimum 0.2 % proof strength (taken as 660 MPa for d > 16 mm, per ISO 898-1 as recalled, not verified here) / 210 GPa; tensile stress area of M20 taken as 245 mm2"}
+   :boundary {:lo 80000.0 :hi 220000.0}}]}
