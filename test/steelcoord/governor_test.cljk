@@ -1,5 +1,5 @@
 (ns steelcoord.governor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [steelcoord.store :as store]
             [steelcoord.advisor :as advisor]
             [steelcoord.governor :as governor]))
