@@ -1,7 +1,7 @@
 (ns steelcoord.store
   "SSoT for the ISCO-08 7214 structural metal preparers and erectors
   job-site scheduling/logistics coordination actor (itonami actor
-  pattern, ADR-2607011000 / CLAUDE.md Actors section; README's
+  pattern, ADR-2607011000 / AGENTS.md Actors section; README's
   'Robotics premise' — a job-site scheduling/logistics coordination
   robot proposes crew/crane scheduling, work-record logging,
   safety-concern flags and structural-steel-materials order
